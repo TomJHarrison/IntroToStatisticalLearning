@@ -3,14 +3,7 @@ from sklearn.datasets import load_iris
 from sklearn.naive_bayes import GaussianNB
 from pydantic import BaseModel
 
-
-class IrisFeatures(BaseModel):
-    sepal_length: float
-    sepal_width: float
-    petal_length: float
-    petal_width: float
-
-
+# --------- Model Training ---------
 # Load Iris dataset
 iris = load_iris()
 
@@ -22,8 +15,23 @@ clf = GaussianNB()
 clf.fit(X, y)
 
 
+# --------- FastAPI Deployment ---------
 # Create FastAPI instance
 app = FastAPI()
+
+# Define Pydantic model for input features
+class IrisFeatures(BaseModel):
+    """
+    Pydantic model for input features of the Iris dataset.
+
+    Later we will use this model to validate the input data for our prediction endpoint.
+    This ensures that the data we receive is in the correct format, contains all the necessary features,
+    and ensures the variables are of the correct type.
+    """
+    sepal_length: float
+    sepal_width: float
+    petal_length: float
+    petal_width: float
 
 # Define prediction endpoint
 @app.post("/predict")
